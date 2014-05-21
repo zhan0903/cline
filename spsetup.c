@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2001-2004 Sistina Software, Inc. All rights reserved.
- * Copyright (C) 2004-2008 Red Hat, Inc. All rights reserved.
+ * Copyright (C) 2001-2004 Sistina Software, Inc. All rights reserved.  * Copyright (C) 2004-2008 Red Hat, Inc. All rights reserved.
  * Copyright (C) 2005-2007 NEC Corporation
  *
  * This file is part of the device-mapper userspace tools.
@@ -19,10 +18,11 @@
 #define _GNU_SOURCE
 #define _FILE_OFFSET_BITS 64
 
-#include "configure.h"
+//#include "configure.h"
 
 #include "libdevmapper.h"
 #include "log.h"
+#include "libdm-common.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -2098,12 +2098,10 @@ static int _help(int argc, char **argv, void *data);
  */
 static struct command _commands[] = {
 	{"help", "[-c|-C|--columns]", 0, 0, _help},
-	{"create", "<dev_name> [-j|--major <major> -m|--minor <minor>]\n"
-	  "\t                  [-U|--uid <uid>] [-G|--gid <gid>] [-M|--mode <octal_mode>]\n"
-	  "\t                  [-u|uuid <uuid>]\n"
-	  "\t                  [--notable | --table <table> | <table_file>]",
+	{"create", "<dev_name> [--dev <raid_name>]\n"
+	  "\t                  [--bs <block_size>] [--reserve <reserve_space>]",
 	 1, 2, _create},
-	{"remove", "[-f|--force] <device>", 0, 1, _remove},
+/*	{"remove", "[-f|--force] <device>", 0, 1, _remove},
 	{"remove_all", "[-f|--force]", 0, 0, _remove_all},
 	{"suspend", "[--noflush] <device>", 0, 1, _suspend},
 	{"resume", "<device>", 0, 1, _resume},
@@ -2122,7 +2120,7 @@ static struct command _commands[] = {
 	{"targets", "", 0, 0, _targets},
 	{"version", "", 0, 0, _version},
 	{"setgeometry", "<device> <cyl> <head> <sect> <start>", 5, 5, _setgeometry},
-	{NULL, NULL, 0, 0, NULL}
+	{NULL, NULL, 0, 0, NULL}*/
 };
 
 static void _usage(FILE *out)
@@ -2185,7 +2183,7 @@ static struct command *_find_command(const char *name)
 static int _process_tree_options(const char *options)
 {
 	const char *s, *end;
-	struct winsize winsz;
+//	struct winsize winsz;
 	size_t len;
 
 	/* Symbol set default */
@@ -2241,9 +2239,9 @@ static int _process_tree_options(const char *options)
 	}
 
 	/* Truncation doesn't work well with vt100 drawing char */
-	if (_tsym != &_tsym_vt100)
-		if (ioctl(1, (unsigned long) TIOCGWINSZ, &winsz) >= 0 && winsz.ws_col > 3)
-			_termwidth = winsz.ws_col - 3;
+//	if (_tsym != &_tsym_vt100)
+//		if (ioctl(1, (unsigned long) TIOCGWINSZ, &winsz) >= 0 && winsz.ws_col > 3)
+//			_termwidth = winsz.ws_col - 3;
 
 	return 1;
 }
@@ -2751,13 +2749,13 @@ int main(int argc, char **argv)
 	r = 0;
 
 out:
-	if (_report) {
+/*	if (_report) {
 		dm_report_output(_report);
 		dm_report_free(_report);
 }
 
 	if (_dtree)
-		dm_tree_free(_dtree);
+		dm_tree_free(_dtree);*/
 
 	return r;
 }
